@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
-public class IOCApplication {
+class IOCApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SpringBootStudyApplication.class, args);
         ApplicationContext applicationContext = ApplicationContextProvider.getContext();
