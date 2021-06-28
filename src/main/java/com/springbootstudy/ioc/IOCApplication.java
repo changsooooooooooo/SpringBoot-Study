@@ -13,7 +13,21 @@ public class IOCApplication {
         SpringApplication.run(SpringBootStudyApplication.class, args);
         ApplicationContext applicationContext = ApplicationContextProvider.getContext();
 //        Base64Encoder base64Encoder = applicationContext.getBean(Base64Encoder.class);
-        Encoder encoder = applicationContext.getBean(Encoder.class);
+        Encoder encoder = applicationContext.getBean("urlEncode", Encoder.class);
         System.out.println(encoder.encode("www.naver.com"));
+    }
+}
+
+@Configuration
+class AppConfig{
+
+    @Bean("base64Encode")
+    public Encoder encoder(Base64Encoder base64Encoder){
+        return new Encoder(base64Encoder);
+    }
+
+    @Bean("urlEncode")
+    public Encoder encoder(UrlEncoder urlEncoder){
+        return new Encoder(urlEncoder);
     }
 }
