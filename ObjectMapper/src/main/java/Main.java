@@ -31,6 +31,8 @@ public class Main {
         String json = mapper.writeValueAsString(user);
         System.out.println(json);
 
+        System.out.println(mapper.readValue(json, User.class));
+
         JsonNode jsonNode = mapper.readTree(json);
         int _age = jsonNode.get("age").asInt();
         System.out.println(_age);

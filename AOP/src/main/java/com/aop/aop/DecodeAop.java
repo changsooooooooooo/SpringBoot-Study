@@ -26,6 +26,7 @@ public class DecodeAop {
         for(Object arg : args){
             if(arg instanceof User){
                 User user = (User) arg;
+
                 String base64Email = user.getEmail();
                 String email = new String(Base64.getDecoder().decode(base64Email), "UTF-8");
                 user.setEmail(email);
