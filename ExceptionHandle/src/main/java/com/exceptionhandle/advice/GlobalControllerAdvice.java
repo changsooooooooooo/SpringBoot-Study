@@ -1,6 +1,8 @@
 package com.exceptionhandle.advice;
 
 import com.exceptionhandle.controller.ApiController;
+import com.exceptionhandle.dto.Error;
+import com.exceptionhandle.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -10,8 +12,11 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,7 +53,9 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
-    public ResponseEntity constraintViolationException(ConstraintViolationException e){
+    public ResponseEntity constraintViolationException(ConstraintViolationException e, HttpServletRequest httpServletRequest){
+
+        List<Error> errorList = new ArrayList<>();
 
         e.getConstraintViolations().forEach(
                 error->{
@@ -59,8 +66,22 @@ public class GlobalControllerAdvice {
                     String field = list.get(list.size()-1).getName();
                     String message = error.getMessage();
                     String invalidValue = error.getInvalidValue().toString();
+
+                    Error errorMessage = new Error();
+                    errorMessage.setMessage(message);
+                    errorMessage.setFiled(field);
+                    errorMessage.setInvalidValue(invalidValue);
+
+                    errorList.add(errorMessage);
                 }
         );
+
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorList(errorList);
+        errorResponse.setMessage("");
+        errorResponse.setRequestUrl(httpServletRequest.getRequestURI());
+        errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.toString());
+        errorResponse.setResultCode("FAIL");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
