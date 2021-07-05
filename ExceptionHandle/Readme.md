@@ -4,3 +4,6 @@
     }
 
 - 해당 excpeitonhadler가 특정 class 내에서 작동하게 하려면 해당 class에 메쏘드 기재하면 된다
+
+
+- Validated : parameter자체에 조건 걸어주는 경우에 해당
