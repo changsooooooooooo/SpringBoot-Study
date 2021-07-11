@@ -3,7 +3,6 @@ package com.client.service;
 import com.client.dto.Req;
 import com.client.dto.UserRequest;
 import com.client.dto.UserResponse;
-import org.apache.catalina.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
